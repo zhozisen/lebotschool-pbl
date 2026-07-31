@@ -79,19 +79,14 @@
       </div>`;
   }
 
-  // ===== 活动下的任务列表（点击活动节点后） =====
-  window.addEventListener('hashchange', route);
-  // 劫持 #/phases/ 路由
-  const origRoute = route;
-  const origHashHandler = () => {
+  // ===== Hash 路由处理 =====
+  function handleHash() {
     const hash = location.hash;
-    const m = hash.match(/^#\/phases\/(pbl-\d+)\/(\w+)$/);
-    if (m) return renderPhase(m[1], m[2]);
+    let m;
+    if (m = hash.match(/^#\/phases\/(pbl-\d+)\/(\w+)$/)) return renderPhase(m[1], m[2]);
     route();
-  };
-  window.removeEventListener('hashchange', origRoute);
-  window.addEventListener('hashchange', origHashHandler);
-  route = origHashHandler;
+  }
+  window.addEventListener('hashchange', handleHash);
 
   function renderPhase(pid, phid) {
     const p = C.projects.find(x => x.id === pid);
